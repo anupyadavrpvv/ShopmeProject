@@ -1,51 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head>
-	<meta http-equip="Content-Type" content="text/html; charset=UTF-8">
-	<!--	defining the screen size to change according to the size of the device-->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-	<title>Shopeme - Admin Control pannel</title>
-	<!--	defining the location of the jquery,bootstrap and other files using thymleaf notations-->
-	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
-	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-	
-</head>
+<head th:replace="fragments :: page_head('Shopeme - Admin Control pannel')" />
 
 <body>
-	<div  class="container-fluid">
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div >
 		<div>
-			<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-				<a class="navbar-brand" th:href="@{/}">
-					<img th:src="@{/images/ShopmeAdminSmall.png}" />
-				</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="topNavbar">
-					<ul class="navbar-nav">
-						<li><a class="nav-link" th:href="@{/users}">Users</a></li>
-						<li><a class="nav-link" th:href="@{/categories}">Categories</a></li>
-						<li><a class="nav-link" th:href="@{/brands}">Brands</a></li>
-						<li><a class="nav-link" th:href="@{/products}">Products</a></li>
-						<li><a class="nav-link" th:href="@{/customers}">Customers</a></li>
-						<li><a class="nav-link" th:href="@{/orders}">Orders</a></li>
-						<li><a class="nav-link" th:href="@{/report}">Sales Report</a></li>
-						<li><a class="nav-link" th:href="@{/articles}">Articles</a></li>
-						<li><a class="nav-link" th:href="@{/menues}">Menus</a></li>
-						<li><a class="nav-link" th:href="@{/users}">Users</a></li>
-						<li><a class="nav-link" th:href="@{/settings}">Settings</a></li>
-					</ul>
-				</div>
-			</nav>
+			<h1>Shopme Control Panel</h1>
 		</div>
-	</div>
-		<div>
-			<p>Shopme Control Panel - copyright &copy; Shopme</p>
-		</div>
-		
+		<div th:replace="fragments :: footer"></div >
+	</div >
 	
 </body>
-
-</html >
+</html  >

@@ -67,6 +67,24 @@ public class UserService {
 		return userRepository.save(user);
 	}
 	
+	/* below method is for users for updating their account details */
+	public User updateAccount(User userInForm) {
+		User userInDB =  userRepository.findById(userInForm.getId()).get();
+		if(!userInForm.getPassword().isEmpty()) {
+			userInDB.setPassword(userInForm.getPassword());
+			encodePassword(userInDB);
+		}
+		
+		if(userInForm.getPhotos() != null) {
+			userInDB.setPhotos(userInForm.getPhotos());
+		}
+		
+		userInDB.setFirstName(userInForm.getFirstName());
+		userInDB.setLastName(userInForm.getLastName());
+		
+		return userRepository.save(userInDB);
+	}
+	
 	private void encodePassword(User user) {
 		String encodedPasssword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodedPasssword);
@@ -110,5 +128,9 @@ public class UserService {
 	
 	public void updateUserEnabledStatus(Integer id, boolean enabled) {
 		userRepository.updateEnabledStatus(id, enabled);
+	}
+
+	public User getByEmail(String email) {
+		return userRepository.getUserByEmail(email);
 	}
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equip="Content-Type" content="text/html; charset=UTF-8">
+	<!--	defining the screen size to change according to the size of the device-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<title>Shopeme - LogIn Page</title>
+	<!--	defining the location of the jquery,bootstrap and other files using thymleaf notations-->
+	<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	
+</head>
+
+<body>
+	<div  class="container-fluid text-center">
+		<div>
+			<img th:src="@{/images/ShopmeAdminBig.png}" />
+		</div>
+		
+		<form th:action="@{/login}" method="POST" style="max-width: 350px; margin: 0 auto">
+			<div th:if="${param.error}">
+				<p class="text-danger"> [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p >
+			</div >
+			<div th:if="${param.logout}">
+				<p class="text-warning"> You have been successfully logged out!</p >
+			</div >
+			<div class="border border-secondary rounded p-3">
+				<p>Access to Shopme Control Panel</p>
+				<p>
+					<input type="email" name="email" class="form-control" placeholder="E-mail" required />
+				</p>
+				<p>
+					<input type="password" name="password" class="form-control" placeholder="Password" required />
+				</p>
+				<p>
+					<input type="checkbox" name="remember-me" />&nbsp; Remember Me
+				</p>
+				<p>
+					<input type="submit" value="login" class="btn btn-primary" />
+				</p>
+			</div >
+		</form >
+		
+		<div th:replace="fragments :: footer"></div >
+	</div>		
+	
+</body>
+</html >
