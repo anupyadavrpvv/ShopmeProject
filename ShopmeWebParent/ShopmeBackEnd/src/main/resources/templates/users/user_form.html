@@ -101,39 +101,9 @@
 		<div th:replace="fragments :: footer"></div >
 	</div>
 	<script type="text/javascript">
-	// function to cancel the creation of new user and redirect to users page
-		$(document).ready(function() {
-			$("#buttonCancel").on("click", function() {
-				window.location = "[[@{/users}]]";
-			});
-			
-			$("#fileImage").change(function() {
-				fileSize = this.files[0].size;
-				
-				if(fileSize > 1048576) {
-					this.setCustomValidity("Image size should be less than 1MB");
-					this.reportValidity();
-					//alert("Image size should be less than 1MB your's' is:" + fileSize + "KB");
-				} else {
-					this.setCustomValidity("");
-					showImageThumbnail(this);
-				}
-				
-			});
-		});
-		
-		//function to show the selected file for preview
-		function showImageThumbnail(fileInput) {
-			var file = fileInput.files[0];
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$("#thumbnail").attr("src", e.target.result);
-			};
-			
-			reader.readAsDataURL(file);
-			
-		};
-		
+	//it's variable that is bieng used in common_form.js file
+	moduleURL = "[[@{/users}]]";
+	
 	//function to check the unique email id for new user
 	function checkEmailUniqueness(form) {
 		url = "[[@{/users/check_email}]]";
@@ -163,6 +133,7 @@
 	}
 		
 		
-	</script >
+	</script>
+	<script th:src="@{/js/common_form.js}"></script>
 </body>
 </html>
