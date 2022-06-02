@@ -9,7 +9,13 @@ import java.nio.file.StandardCopyOption;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileUploadUtil {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadUtil.class);
+	
 	public static void saveFile(String uploadDir, String fileName, 
 					MultipartFile multipartFile) throws IOException {
 		
@@ -43,5 +49,15 @@ public class FileUploadUtil {
 		}catch (IOException e) {
 			System.out.println("Could not list directory: " + dirPath);
 		}
+	}
+
+	public static void removeDir(String categoryDir) {
+		cleanDir(categoryDir);
+		try {
+			Files.delete(Paths.get(categoryDir));
+		} catch (IOException e) {
+			LOGGER.error("Could not remove directory:" + categoryDir);
+		}
+		
 	}
 }
