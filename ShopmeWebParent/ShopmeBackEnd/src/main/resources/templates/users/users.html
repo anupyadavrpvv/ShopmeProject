@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head th:replace="fragments :: page_head('Shopeme - User management page')" />
+<head th:replace="fragments :: page_head('Shopeme - User management page', 'none')" />
 
 <body>
 	<div class="container-fluid">
@@ -48,7 +48,7 @@
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
 						<td>
-							<div th:replace="fragments :: status(${user.enabled}, 'user', '/user/' + ${user.id})"/>
+							<div th:replace="fragments :: status(${user.enabled}, 'user', '/users/' + ${user.id})" />
 						</td>
 						<td>
 							<div th:replace="fragments :: edit('user', '/users/edit/' + ${user.id})" />

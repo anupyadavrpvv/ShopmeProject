@@ -19,7 +19,7 @@ import com.shopme.common.entity.User;
 @Service
 @Transactional
 public class UserService {
-	public static final int USER_PER_PAGE = 4;
+	public static final int USERS_PER_PAGE = 4;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -40,11 +40,15 @@ public class UserService {
 
 	public Page<User> listByPage(int pageNumber, String sortField, String sortDirection, String keyword) {
 		Sort sort = Sort.by(sortField);
+		
 		sort = sortDirection.equals("asc") ? sort.ascending() : sort.descending();
-		Pageable pageable = PageRequest.of(pageNumber - 1, USER_PER_PAGE, sort);
+		
+		Pageable pageable = PageRequest.of(pageNumber - 1, USERS_PER_PAGE, sort);
+		
 		if(keyword != null) {
 			return userRepository.findAll(keyword, pageable);
 		}
+		
 		return userRepository.findAll(pageable);
 	}
 	
@@ -54,8 +58,10 @@ public class UserService {
 		 * only if it's a new user of an existing user password is being changed
 		 * */
 		boolean isUpdatingUser = (user.getId() != null);
+		
 		if(isUpdatingUser) {
 			User existingUser = userRepository.findById(user.getId()).get();
+			
 			if(user.getPassword().isEmpty()) {
 				user.setPassword(existingUser.getPassword());
 			} else {
@@ -64,6 +70,7 @@ public class UserService {
 		}else {
 			encodePassword(user);
 		}
+		
 		return userRepository.save(user);
 	}
 	

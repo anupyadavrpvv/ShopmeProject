@@ -45,15 +45,17 @@ public class AccountController {
 	public String updateUserDetails(User user, RedirectAttributes redirectAttributes,
 			@AuthenticationPrincipal ShopmeUserDetails loggedUser,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
-//		System.out.println(user);
-//		System.out.println(multipartFile.getOriginalFilename());
+//		
 		if(!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
 			User savedUser = service.updateAccount(user);
+			
 			String uploadDirectory = "user-photos/" + savedUser.getId();
+			
 			FileUploadUtil.cleanDir(uploadDirectory);
 			FileUploadUtil.saveFile(uploadDirectory, fileName, multipartFile);
+		
 		} else {	
 			if(user.getPhotos().isEmpty()) user.setPhotos(null);
 			service.updateAccount(user);
@@ -61,8 +63,7 @@ public class AccountController {
 		
 		loggedUser.setFirstName(user.getFirstName());
 		loggedUser.setLastName(user.getLastName());
-		
-//		service.save(user);
+
 		redirectAttributes.addFlashAttribute("message", "Your account detailos has been updated successfully!");
 		
 		return "redirect:/account";

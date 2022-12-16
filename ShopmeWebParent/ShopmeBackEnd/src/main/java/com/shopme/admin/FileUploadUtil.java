@@ -42,21 +42,22 @@ public class FileUploadUtil {
 					try {
 						Files.delete(file);
 					}catch (IOException e) {
-						System.out.println("Could not delete file: "+file);
+						LOGGER.error("Could not delete file: "+file);
 					}
 				}
 			});
 		}catch (IOException e) {
-			System.out.println("Could not list directory: " + dirPath);
+			LOGGER.error("Could not list directory: " + dirPath);
 		}
 	}
 
-	public static void removeDir(String categoryDir) {
-		cleanDir(categoryDir);
+	public static void removeDir(String dir) {
+		cleanDir(dir);
+		
 		try {
-			Files.delete(Paths.get(categoryDir));
+			Files.delete(Paths.get(dir));
 		} catch (IOException e) {
-			LOGGER.error("Could not remove directory:" + categoryDir);
+			LOGGER.error("Could not remove directory:" + dir);
 		}
 		
 	}

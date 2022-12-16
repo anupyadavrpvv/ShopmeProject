@@ -70,14 +70,19 @@ public class UserPDFExporter extends AbstractExporter {
 		
 		cell.setPhrase(new Phrase("User ID", font));
 		table.addCell(cell);
+		
 		cell.setPhrase(new Phrase("E-mail", font));
 		table.addCell(cell);
+		
 		cell.setPhrase(new Phrase("First Name", font));
 		table.addCell(cell);
+		
 		cell.setPhrase(new Phrase("Last Name", font));
 		table.addCell(cell);
+		
 		cell.setPhrase(new Phrase("Roles", font));
 		table.addCell(cell);
+		
 		cell.setPhrase(new Phrase("Enabled", font));
 		table.addCell(cell);
 		

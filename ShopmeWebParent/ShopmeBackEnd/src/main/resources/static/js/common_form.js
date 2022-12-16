@@ -1,23 +1,32 @@
 // function to cancel the creation of new user and redirect to users page
-$(document).ready(function () {
-	$("#buttonCancel").on("click", function () {
+$(document).ready(function() {
+	$("#buttonCancel").on("click", function() {
 		window.location = moduleURL;
 	});
-
-	$("#fileImage").change(function () {
-		fileSize = this.files[0].size;
-
-		if (fileSize > 102400) {
-			this.setCustomValidity("Image size should be less than 100KB");
-			this.reportValidity();
-			//alert("Image size should be less than 1MB your's' is:" + fileSize + "KB");
-		} else {
-			this.setCustomValidity("");
-			showImageThumbnail(this);
+	
+	$("#fileImage").change(function() {
+		if (!checkFileSize(this)) {
+			return;
 		}
-
+		
+		showImageThumbnail(this);				
 	});
 });
+
+function checkFileSize(fileInput) {
+	fileSize = fileInput.files[0].size;
+	
+	if (fileSize > MAX_FILE_SIZE) {
+		fileInput.setCustomValidity("You must choose an image less than " + MAX_FILE_SIZE + " bytes!");
+		fileInput.reportValidity();
+		
+		return false;
+	} else {
+		fileInput.setCustomValidity("");
+		
+		return true;
+	}	
+}
 
 //function to show the selected file for preview
 function showImageThumbnail(fileInput) {

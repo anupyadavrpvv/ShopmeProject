@@ -42,46 +42,49 @@ public class UserController {
 		return listByPage(1, model, "firstName", "asc", null);
 	}
 	
-	@GetMapping("/users/page/{pageNumber}")
-	public String listByPage(@PathVariable(name = "pageNumber") int pageNumber, Model model,
-			@Param("sortField") String sortField, @Param("sortDir") String sortDirection,
+	@GetMapping("/users/page/{pageNum}")
+	public String listByPage(
+			@PathVariable(name = "pageNum") int pageNum, Model model,
+			@Param("sortField") String sortField, @Param("sortDir") String sortDir,
 			@Param("keyword") String keyword
 			) {
-		System.out.println("Sort Field: " + sortField);
-		System.out.println("Sort Direction: " + sortDirection);
-		Page<User> page = service.listByPage(pageNumber, sortField, sortDirection, keyword);
+		Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
+		
 		List<User> listUsers = page.getContent();
-//		System.out.println("PageNumber: "+pageNumber);
-//		System.out.println("Total elements: "+ page.getTotalElements());
-//		System.out.println("Total pages: "+ page.getTotalPages());
-		long startCount = (pageNumber - 1) * UserService.USER_PER_PAGE + 1;
-		long endCount = startCount + UserService.USER_PER_PAGE - 1;
-		if(endCount > page.getTotalElements()) {
+		
+		long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
+		long endCount = startCount + UserService.USERS_PER_PAGE - 1;
+		if (endCount > page.getTotalElements()) {
 			endCount = page.getTotalElements();
 		}
-		String reverseSortDir = sortDirection.equals("asc") ? "desc" : "asc";
 		
-		model.addAttribute("currentPage", pageNumber);
+		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+		
+		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", endCount);
 		model.addAttribute("totalItems", page.getTotalElements());
 		model.addAttribute("listUsers", listUsers);
 		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDirection);
+		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);
-		return "users/users";
+		
+		return "users/users";		
 	}
 	
 	@GetMapping("/users/new")
 	public String newUser(Model model) {
 		List<Role> rolesList =  service.listOfRoles();
+		
 		User user = new User();
 		user.setEnabled(true);
+		
 		model.addAttribute("user", user);
 		model.addAttribute("rolesList", rolesList);
 		model.addAttribute("pageTitle", "Create New User");
+		
 		return "users/user_form";
 	}
 	
@@ -110,7 +113,7 @@ public class UserController {
 
 	private String getRedirectURLforAffectedUser(User user) {
 		String firstPartOfEmailString = user.getEmail().split("@")[0];
-		return "redirect:/users/page/1?sortField=id&sortDirection=asc&keyword=" + firstPartOfEmailString;
+		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" + firstPartOfEmailString;
 	}
 	
 	@GetMapping("/users/edit/{id}")
@@ -120,9 +123,11 @@ public class UserController {
 		try {
 			List<Role> rolesList =  service.listOfRoles();
 			User user = service.get(id);
+			
 			model.addAttribute("user", user);
 			model.addAttribute("rolesList", rolesList);
 			model.addAttribute("pageTitle", "Edit User (Id: "+id+")");
+			
 			return "users/user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
@@ -146,14 +151,12 @@ public class UserController {
 	
 	@GetMapping("/users/{id}/enabled/{status}")
 	public String updateUserEnabledStatus(@PathVariable("id") Integer id,
-			@PathVariable("status") boolean enabled,
-			RedirectAttributes redirectAttributes) {
-		
+			@PathVariable("status") boolean enabled, RedirectAttributes redirectAttributes) {
 		service.updateUserEnabledStatus(id, enabled);
 		String status = enabled ? "enabled" : "disabled";
-		String message = "The user ID " + id + "has been " + status;
-		
+		String message = "The user ID " + id + " has been " + status;
 		redirectAttributes.addFlashAttribute("message", message);
+		
 		return "redirect:/users";
 	}
 	
